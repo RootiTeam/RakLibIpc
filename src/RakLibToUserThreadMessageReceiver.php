@@ -64,7 +64,9 @@ final class RakLibToUserThreadMessageReceiver{
 				$port = Binary::readShort(substr($packet, $offset, 2));
 				$offset += 2;
 				$clientID = Binary::readLong(substr($packet, $offset, 8));
-				$listener->onClientConnect($sessionId, $address, $port, $clientID);
+				$offset += 8;
+				$protocolVersion = Binary::readByte(substr($packet, $offset, 1));
+				$listener->onClientConnect($sessionId, $address, $port, $clientID, $protocolVersion);
 			}elseif($id === ITCProtocol::PACKET_CLOSE_SESSION){
 				$sessionId = Binary::readInt(substr($packet, $offset, 4));
 				$offset += 4;
